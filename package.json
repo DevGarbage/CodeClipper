@@ -1,0 +1,13 @@
+{
+  "title": "CodeClipper",
+  "name": "codeclipper",
+  "version": "0.0.1",
+  "description": "Clip the codes from webpage",
+  "main": "index.js",
+  "author": "DevGarbage",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT"
+}
