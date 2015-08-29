@@ -1,9 +1,24 @@
-var self = require('sdk/self');
+var buttons = require('sdk/ui/button/action');
+var tabs = require("sdk/tabs");
+var panels = require("sdk/panel");
+var self = require("sdk/self");
 
-// a dummy function, to show how tests work.
-// to see how to test this function, look at test/test-index.js
-function dummy(text, callback) {
-  callback(text);
+var button = buttons.ActionButton({
+  id: "CodeClipper",
+  label: "Code Clipper",
+  icon: {
+    "16": "./Icons/Code-16.png",
+    "32": "./Icons/Code-32.png",
+    "64": "./Icons/Code-64.png"
+  },
+  onClick: handleClick
+});
+
+var panel = panels.Panel({
+  contentURL: self.data.url("panel/panel.html"),
+});
+function handleClick(state) {
+    panel.show({
+      position: button
+    });
 }
-
-exports.dummy = dummy;
