@@ -22,3 +22,7 @@ function handleClick(state) {
       position: button
     });
 }
+ tabs.activeTab.attach({
+       contentScriptFile: [self.data.url('scripts/contentScripts/jquery-2.1.4.min.js'),
+                          self.data.url("scripts/contentScripts/pageLoad.js")]
+    });
