@@ -4,7 +4,7 @@ var tabs = require("sdk/tabs");
 var panels = require("sdk/panel");
 var self = require("sdk/self");
 var pageMod = require("sdk/page-mod");
-var jsonData=self.data.load('frontendPlaySites/sitesList.json');
+var jsonData = self.data.load('frontendPlaySites/sitesList.json');
 //Browser Button
 var button = buttons.ActionButton({
     id: "CodeClipper",
@@ -22,16 +22,15 @@ var panel = panels.Panel({
 });
 //Loading Content scripts
 pageMod.PageMod({
-  include: "*",
-  contentScriptFile:[self.data.url('scripts/contentScripts/jquery-2.1.4.min.js'),
-                       self.data.url("scripts/contentScripts/pageLoad.js")],
-                        attachTo: ["existing", "top"],
-                       onAttach: function(worker) {
-  
-  worker.port.on("FrontendSitesListReq", function(data) {
-      worker.port.emit("FrontendSitesListRes",jsonData);
-    });
-}
+    include: "*",
+    contentScriptFile: [self.data.url('scripts/contentScripts/jquery-2.1.4.min.js'),
+                         self.data.url("scripts/contentScripts/pageLoad.js")],
+    attachTo: ["existing", "top"],
+    onAttach: function (worker) {
+        worker.port.on("FrontendSitesListReq", function (data) {
+            worker.port.emit("FrontendSitesListRes", jsonData);
+        });
+    }
 });
 //Action button click handler
 function handleClick(state) {
