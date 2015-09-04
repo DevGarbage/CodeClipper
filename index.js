@@ -24,7 +24,8 @@ var panel = panels.Panel({
 pageMod.PageMod({
     include: "*",
     contentScriptFile: [self.data.url('scripts/contentScripts/jquery-2.1.4.min.js'),
-                         self.data.url("scripts/contentScripts/pageLoad.js")],
+        self.data.url("scripts/contentScripts/pageLoad.js")],
+    contentStyleFile: self.data.url("Styles/App.css"),
     attachTo: ["existing", "top"],
     onAttach: function (worker) {
         worker.port.on("FrontendSitesListReq", function (data) {
