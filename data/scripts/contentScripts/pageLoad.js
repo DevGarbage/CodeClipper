@@ -29,11 +29,10 @@ function FrontendPlayWebPage() {
 }
 function AddClipperInCode() {
     $('pre').each(function (index, ele) {
-        var btnstr = '<div class="btn-group"> <button type="button" class="btn btn-danger">Action</button> <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button> <ul class="dropdown-menu" style="float: right; z-index: 10000; position: absolute;"> <li><a href="#">Action</a></li> <li><a href="#">Another action</a></li> <li><a href="#">Something else here</a></li> <li role="separator" class="divider"></li> <li><a href="#">Separated link</a></li> </ul> </div>';
+        var btnstr = '<div class="wrap"><div class="clip"><i class="fa fa-code"></i> Clip</div><div class="Drop"><i class="fa fa-caret-down"></i></div></div>';
         var $btn = $.parseHTML(btnstr);
         $($btn).css("float", "right");
         $($btn).css('z-index', 9999);
-       // $($btn).css('position', 'absolute');
         $(ele).prepend($btn);
 
     });

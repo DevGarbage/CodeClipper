@@ -25,7 +25,8 @@ pageMod.PageMod({
     include: "*",
     contentScriptFile: [self.data.url('scripts/contentScripts/jquery-2.1.4.min.js'),
         self.data.url("scripts/contentScripts/pageLoad.js")],
-    contentStyleFile: self.data.url("Styles/App.css"),
+    contentStyleFile: [self.data.url("Styles/App.css"),
+        self.data.url("Icons/css/font-awesome.min.css")],
     attachTo: ["existing", "top"],
     onAttach: function (worker) {
         worker.port.on("FrontendSitesListReq", function (data) {
