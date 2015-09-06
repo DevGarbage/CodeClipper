@@ -1,4 +1,5 @@
 var frontendPlaySites;
+var DropMenu = $.parseHTML('<div id="DropMenu"><ul id="MenuWrap"><li class="MenuItem">Copy to Clipboard</li><li class="MenuItem">Save to Disk</li></div>');
 $(document).ready(function () {
     isFrontendPlaySite();
 });
@@ -23,6 +24,7 @@ self.port.on("FrontendSitesListRes", function (jsonData) {
 });
 function CommonWebPage() {
     AddClipperInCode();
+    InitiateDropDown();
 }
 function FrontendPlayWebPage() {
     alert('frontend play site');
@@ -36,4 +38,26 @@ function AddClipperInCode() {
         $(ele).prepend($btn);
 
     });
+}
+function InitiateDropDown(){
+  $(document).on("click", ".Drop", function (event) {
+		if ($(this).hasClass('hasDropMenu')) {
+			$('#DropMenu').remove();
+			$(this).removeClass('hasDropMenu');
+			event.stopPropagation();
+		} else {
+			$('#DropMenu').remove();
+			$('.hasDropMenu').removeClass('hasDropMenu');
+			var CurrentClipperOffset=$(this).parent().offset();
+			$(DropMenu).css({top: CurrentClipperOffset.top+25, left: CurrentClipperOffset.left, position:'absolute'});
+			$('body').append($(DropMenu));
+			$(DropMenu).show();
+			$(this).addClass('hasDropMenu');
+			event.stopPropagation();
+		}
+	});
+	$(document).on("click", "html", function () {
+		$('#DropMenu').hide();
+		$('.hasDropMenu').removeClass('hasDropMenu');
+	});  
 }
