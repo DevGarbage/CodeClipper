@@ -1,4 +1,5 @@
 var frontendPlaySites;
+var ClipperIndex=0;
 var DropMenu = $.parseHTML('<div id="DropMenu"><ul id="MenuWrap"><li class="MenuItem">Copy to Clipboard</li><li class="MenuItem">Save to Disk</li></div>');
 $(document).ready(function () {
     isFrontendPlaySite();
@@ -24,6 +25,7 @@ self.port.on("FrontendSitesListRes", function (jsonData) {
 });
 function CommonWebPage() {
     AddClipperInCode();
+    WatchDynamicCodeBlock();
     InitiateDropDown();
 }
 function FrontendPlayWebPage() {
@@ -31,33 +33,78 @@ function FrontendPlayWebPage() {
 }
 function AddClipperInCode() {
     $('pre').each(function (index, ele) {
-        var btnstr = '<div class="wrap"><div class="clip"><i class="fa fa-code"></i> Clip</div><div class="Drop"><i class="fa fa-caret-down"></i></div></div>';
-        var $btn = $.parseHTML(btnstr);
-        $($btn).css("float", "right");
-        $($btn).css('z-index', 9999);
-        $(ele).prepend($btn);
+        if(!($(ele).attr('data-ClipperHooked')))
+        ClipperIndex++;
+        var $Clipperbtn = CreateClipper(ClipperIndex);
+        $Clipperbtn.css("float", "right");
+        $Clipperbtn.css('z-index', 9999);
+        $(ele).prepend($Clipperbtn);
+        $(ele).attr('data-ClipperHooked',true);
+    });
+    
+}
+function CreateClipper(index) {
+    //'<div class="wrap"><div class="clip"><i class="fa fa-code"></i> Clip</div><div class="Drop"><i class="fa fa-caret-down"></i></div></div>';
+    var $Wrapper = $('<div/>');
+    $Wrapper.addClass('wrap');
+    $Wrapper.attr('data-WrapIndex',index);
 
+    var $Clipbtn = $('<div/>');
+    $Clipbtn.addClass('clip');
+    $Clipbtn.text('Clip');
+    $Clipbtn.attr('data-ClipIndex',index);
+    var $ClipIcon = $('<i class="fa fa-code"></i>');
+    $Clipbtn.prepend($ClipIcon);
+
+    var $Dropbtn = $('<div/>');
+    $Dropbtn.addClass('Drop');
+    $Dropbtn.attr('data-DropIndex',index);
+    var $DropIcon = $('<i class="fa fa-caret-down">');
+    $Dropbtn.append($DropIcon);
+
+    $Wrapper.append($Clipbtn);
+    $Wrapper.append($Dropbtn);
+
+    return $Wrapper;
+
+}
+function InitiateDropDown() {
+    $(document).on("click", ".Drop", function (event) {
+        if ($(this).hasClass('hasDropMenu')) {
+            $('#DropMenu').remove();
+            $(this).removeClass('hasDropMenu');
+            event.stopPropagation();
+        } else {
+            $('#DropMenu').remove();
+            $('.hasDropMenu').removeClass('hasDropMenu');
+            var CurrentClipperOffset = $(this).parent().offset();
+            $(DropMenu).css({ top: CurrentClipperOffset.top + 25, left: CurrentClipperOffset.left, position: 'absolute' });
+            $('body').append($(DropMenu));
+            $(DropMenu).show();
+            $(this).addClass('hasDropMenu');
+            event.stopPropagation();
+        }
+    });
+    $(document).on("click", "html", function () {
+        $('#DropMenu').hide();
+        $('.hasDropMenu').removeClass('hasDropMenu');
     });
 }
-function InitiateDropDown(){
-  $(document).on("click", ".Drop", function (event) {
-		if ($(this).hasClass('hasDropMenu')) {
-			$('#DropMenu').remove();
-			$(this).removeClass('hasDropMenu');
-			event.stopPropagation();
-		} else {
-			$('#DropMenu').remove();
-			$('.hasDropMenu').removeClass('hasDropMenu');
-			var CurrentClipperOffset=$(this).parent().offset();
-			$(DropMenu).css({top: CurrentClipperOffset.top+25, left: CurrentClipperOffset.left, position:'absolute'});
-			$('body').append($(DropMenu));
-			$(DropMenu).show();
-			$(this).addClass('hasDropMenu');
-			event.stopPropagation();
-		}
-	});
-	$(document).on("click", "html", function () {
-		$('#DropMenu').hide();
-		$('.hasDropMenu').removeClass('hasDropMenu');
-	});  
+function WatchDynamicCodeBlock(){
+var target = $(document);
+var config = { 
+	childList: true, 
+    subtree: true, 
+};
+observer.observe(target[0], config);
 }
+var observer = new MutationObserver(function( mutations ) {
+  mutations.forEach(function( mutation ) {
+    var newNodes = mutation.addedNodes; // DOM NodeList
+    if( newNodes.length == 0 ) { // If there are new nodes added
+    }else{
+        var test=1;
+    //AddClipperInCode();
+    }
+  });    
+});
