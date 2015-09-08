@@ -100,8 +100,8 @@ observer.observe(target[0], config);
 }
 var observer = new MutationObserver(function( mutations ) {
   mutations.forEach(function( mutation ) {
-    var newNodes = mutation.addedNodes; // DOM NodeList
-    if( newNodes.length == 0 ) { // If there are new nodes added
+    if( mutation.type == 'childList' || mutation.type=='subtree' ) { // If there are new nodes added
+        var newNodes = mutation.addedNodes; // DOM NodeList
     }else{
         var test=1;
     //AddClipperInCode();
