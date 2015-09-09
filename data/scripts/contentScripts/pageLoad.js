@@ -101,10 +101,14 @@ observer.observe(target[0], config);
 var observer = new MutationObserver(function( mutations ) {
   mutations.forEach(function( mutation ) {
     if( mutation.type == 'childList' || mutation.type=='subtree' ) { // If there are new nodes added
-        var newNodes = mutation.addedNodes; // DOM NodeList
+        $.each(mutation.addedNodes,function(index,value){
+            if(value.nodeName == "PRE")
+            {
+                AddClipperInCode();
+            }
+        });
+        
     }else{
-        var test=1;
-    //AddClipperInCode();
     }
   });    
 });
