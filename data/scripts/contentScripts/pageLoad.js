@@ -1,5 +1,5 @@
 var frontendPlaySites;
-var ClipperIndex=0;
+var ClipperIndex = 0;
 var DropMenu = $.parseHTML('<div id="DropMenu"><ul id="MenuWrap"><li class="MenuItem">Copy to Clipboard</li><li class="MenuItem">Save to Disk</li></div>');
 $(document).ready(function () {
     isFrontendPlaySite();
@@ -33,32 +33,35 @@ function FrontendPlayWebPage() {
 }
 function AddClipperInCode() {
     $('pre').each(function (index, ele) {
-        if(!($(ele).attr('data-ClipperHooked')))
-        ClipperIndex++;
-        var $Clipperbtn = CreateClipper(ClipperIndex);
-        $Clipperbtn.css("float", "right");
-        $Clipperbtn.css('z-index', 9999);
-        $(ele).prepend($Clipperbtn);
-        $(ele).attr('data-ClipperHooked',true);
+        var HookedStatus = $(ele).attr('data-ClipperHooked');
+        if (HookedStatus == "true") { }
+        else {
+            ClipperIndex++;
+            var $Clipperbtn = CreateClipper(ClipperIndex);
+            $Clipperbtn.css("float", "right");
+            $Clipperbtn.css('z-index', 9999);
+            $(ele).prepend($Clipperbtn);
+            $(ele).attr('data-ClipperHooked', true);
+        }
     });
-    
+
 }
 function CreateClipper(index) {
     //'<div class="wrap"><div class="clip"><i class="fa fa-code"></i> Clip</div><div class="Drop"><i class="fa fa-caret-down"></i></div></div>';
     var $Wrapper = $('<div/>');
-    $Wrapper.addClass('wrap');
-    $Wrapper.attr('data-WrapIndex',index);
+    $Wrapper.addClass('CCwrap');
+    $Wrapper.attr('data-WrapIndex', index);
 
     var $Clipbtn = $('<div/>');
     $Clipbtn.addClass('clip');
     $Clipbtn.text('Clip');
-    $Clipbtn.attr('data-ClipIndex',index);
+    $Clipbtn.attr('data-ClipIndex', index);
     var $ClipIcon = $('<i class="fa fa-code"></i>');
     $Clipbtn.prepend($ClipIcon);
 
     var $Dropbtn = $('<div/>');
     $Dropbtn.addClass('Drop');
-    $Dropbtn.attr('data-DropIndex',index);
+    $Dropbtn.attr('data-DropIndex', index);
     var $DropIcon = $('<i class="fa fa-caret-down">');
     $Dropbtn.append($DropIcon);
 
@@ -90,25 +93,28 @@ function InitiateDropDown() {
         $('.hasDropMenu').removeClass('hasDropMenu');
     });
 }
-function WatchDynamicCodeBlock(){
-var target = $(document);
-var config = { 
-	childList: true, 
-    subtree: true, 
-};
-observer.observe(target[0], config);
+function WatchDynamicCodeBlock() {
+    var target = $(document);
+    var config = {
+        childList: true,
+        subtree: true,
+    };
+    observer.observe(target[0], config);
 }
-var observer = new MutationObserver(function( mutations ) {
-  mutations.forEach(function( mutation ) {
-    if( mutation.type == 'childList' || mutation.type=='subtree' ) { // If there are new nodes added
-        $.each(mutation.addedNodes,function(index,value){
-            if(value.nodeName == "PRE")
-            {
-                AddClipperInCode();
-            }
-        });
-        
-    }else{
-    }
-  });    
+var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        if (mutation.type == 'childList' || mutation.type == 'subtree') { // If there are new nodes added
+            $.each(mutation.addedNodes, function (index, value) {
+                if (value.nodeName == "PRE") {
+                    AddClipperInCode();
+                }
+                else {
+
+                }
+
+            });
+
+        } else {
+        }
+    });
 });

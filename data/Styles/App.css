@@ -1,8 +1,10 @@
-.wrap {
+.CCwrap {
     max-width: 87px;
+    width:87px;
+    height: 25px;
     border: 1px solid #ACADB1;
     position: relative;
-    display: inline-block;
+    display: inline-block!important;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -21,6 +23,7 @@
     background-color: #33343e;
     color: white;
     opacity: 0.3;
+    display: normal!important;
 }
 .Drop {
     float: right;
