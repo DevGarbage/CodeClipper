@@ -1,6 +1,6 @@
 var frontendPlaySites;
 var ClipperIndex = 0;
-var DropMenu = $.parseHTML('<div id="DropMenu"><ul id="MenuWrap"><li class="MenuItem">Copy to Clipboard</li><li class="MenuItem">Save to Disk</li></div>');
+var DropMenu = $.parseHTML('<div id="DropMenu"><ul id="MenuWrap"><li class="MenuItem">Copy To Clipboard</li><li class="MenuItem">Save </li></div>');
 $(document).ready(function () {
     isFrontendPlaySite();
 });
@@ -36,18 +36,31 @@ function AddClipperInCode() {
         var HookedStatus = $(ele).attr('data-ClipperHooked');
         if (HookedStatus == "true") { }
         else {
+            if(validBlock(ele)){
             ClipperIndex++;
             var $Clipperbtn = CreateClipper(ClipperIndex);
-            $Clipperbtn.css("float", "right");
-            $Clipperbtn.css('z-index', 9999);
-            $(ele).prepend($Clipperbtn);
-            $(ele).attr('data-ClipperHooked', true);
+            var ClipperLeft=$(ele).offset().left+$(ele).outerWidth()-90;
+            var clipperTop=$(ele).offset().top;
+            $Clipperbtn.css({
+                'z-index':9999,
+                'left':ClipperLeft,
+                'top':clipperTop
+            });
+            $('body').append($Clipperbtn);
+            $(ele).attr('data-ClipperHooked',true);
+            }
         }
     });
-
+}
+function validBlock(ele){
+    if($(ele).css('display') == 'none' || $(ele).outerWidth()<100){ 
+        return false;
+        }
+        else{
+            return true ;
+        }
 }
 function CreateClipper(index) {
-    //'<div class="wrap"><div class="clip"><i class="fa fa-code"></i> Clip</div><div class="Drop"><i class="fa fa-caret-down"></i></div></div>';
     var $Wrapper = $('<div/>');
     $Wrapper.addClass('CCwrap');
     $Wrapper.attr('data-WrapIndex', index);
@@ -69,7 +82,6 @@ function CreateClipper(index) {
     $Wrapper.append($Dropbtn);
 
     return $Wrapper;
-
 }
 function InitiateDropDown() {
     $(document).on("click", ".Drop", function (event) {
@@ -103,17 +115,14 @@ function WatchDynamicCodeBlock() {
 }
 var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-        if (mutation.type == 'childList' || mutation.type == 'subtree') { // If there are new nodes added
+        if (mutation.type == 'childList' || mutation.type == 'subtree') {
             $.each(mutation.addedNodes, function (index, value) {
                 if (value.nodeName == "PRE") {
                     AddClipperInCode();
                 }
                 else {
-
                 }
-
             });
-
         } else {
         }
     });
