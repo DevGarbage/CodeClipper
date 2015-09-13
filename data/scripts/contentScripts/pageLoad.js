@@ -14,6 +14,7 @@ self.port.on("FrontendSitesListRes", function (jsonData) {
     $.each(JSON.parse(frontendPlaySites), function (key, val) {
         if (val.hostname == hostName) {
             FrontendPlaySite = true;
+            
         }
     });
     if (FrontendPlaySite) {
